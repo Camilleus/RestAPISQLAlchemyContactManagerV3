@@ -1,6 +1,8 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, HTTPException
+from fastapi.responses import RedirectResponse
 from fastapi.templating import Jinja2Templates
 from typing import Dict
+from models import User
 
 
 app = FastAPI()
@@ -45,3 +47,16 @@ def read_contacts(request: Request):
 @app.get("/welcome")
 def welcome(request: Request):
     return templates.TemplateResponse("welcome.html", {"request": request})
+
+
+@app.post("/register")
+def register_user(request: Request, user: User):
+    if user.username in users_db:
+        raise HTTPException(status_code=400, detail="Użytkownik już istnieje")
+
+    verification_token = "some_random_token"
+    #TODO logic of sending an email with token
+
+    users_db[user.username] = user.dict()
+
+    return RedirectResponse(url="/welcome")
