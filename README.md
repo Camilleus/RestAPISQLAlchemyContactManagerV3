@@ -29,6 +29,7 @@ RestAPISQLAlchemyContactManagerV3
 ├─ api
 │  ├─ apis.py
 │  ├─ config.py
+│  ├─ endpoints.py
 │  ├─ routes.py
 │  └─ __init__.py
 ├─ auth
@@ -56,6 +57,7 @@ RestAPISQLAlchemyContactManagerV3
 │  ├─ index.html
 │  ├─ login,html
 │  ├─ register.html
-│  └─ verify.html
+│  ├─ verify.html
+│  └─ welcome.html
 └─ __init__.py
 ```
