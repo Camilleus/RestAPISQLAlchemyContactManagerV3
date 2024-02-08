@@ -1,14 +1,20 @@
-from fastapi import HTTPException, Depends
+from fastapi import HTTPException, Depends, status
 from datetime import timedelta
 from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 from models import Token, User
-from fastapi import status
 from auth.jwts import create_jwt_token, decode_jwt_token
 from api.config import SECRET_KEY, ALGORITHM, oauth2_scheme
 
 
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
+
+
+EMAIL_ADDRESS = "email@example.com"  #TODO
+EMAIL_PASSWORD = "email_password"   #TODO
 
 
 def authenticate_user(username: str, password: str):
@@ -76,3 +82,19 @@ def get_current_active_user(current_user: User = Depends(get_current_user)):
     if current_user is None:
         raise HTTPException(status_code=400, detail="Inactive user")
     return current_user
+
+
+def send_email(email: str, token: str):
+    subject = "Weryfikacja konta"
+    message = f"Witaj! Twój token weryfikacyjny to: {token}"
+
+    msg = MIMEMultipart()
+    msg["From"] = EMAIL_ADDRESS
+    msg["To"] = email
+    msg["Subject"] = subject
+
+    msg.attach(MIMEText(message, "plain"))
+
+    with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
+        server.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
+        server.sendmail(EMAIL_ADDRESS, email, msg.as_string())
