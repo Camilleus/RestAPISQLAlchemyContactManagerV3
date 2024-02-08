@@ -3,6 +3,7 @@ from fastapi.responses import RedirectResponse
 from fastapi.templating import Jinja2Templates
 from typing import Dict
 from models import User
+from auth.auths import send_email
 
 
 app = FastAPI()
@@ -55,7 +56,7 @@ def register_user(request: Request, user: User):
         raise HTTPException(status_code=400, detail="Użytkownik już istnieje")
 
     verification_token = "some_random_token"
-    #TODO logic of sending an email with token
+    send_email(user.email, verification_token)
 
     users_db[user.username] = user.dict()
 
