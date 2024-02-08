@@ -60,3 +60,17 @@ def register_user(request: Request, user: User):
     users_db[user.username] = user.dict()
 
     return RedirectResponse(url="/welcome")
+
+
+@app.get("/verify/{username}/{verification_token}")
+def verify_email(username: str, verification_token: str):
+    if username not in users_db:
+        raise HTTPException(status_code=404, detail="Użytkownik nie istnieje")
+
+    expected_token = "some_random_token"
+    if verification_token != expected_token:
+        raise HTTPException(status_code=400, detail="Nieprawidłowy token weryfikacyjny")
+
+    users_db[username]["verified"] = True
+
+    return RedirectResponse(url="/login")
