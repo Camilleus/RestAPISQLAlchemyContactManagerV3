@@ -37,18 +37,18 @@ RestAPISQLAlchemyContactManagerV3
 │  ├─ jwts.py
 │  └─ __init__.py
 ├─ db
-│  ├─ contacts.db
 │  ├─ data_faker.py
-│  ├─ data_for_db.sql
 │  ├─ data_sender.py
 │  ├─ dbs.py
 │  └─ __init__.py
+├─ docker-compose.yaml
 ├─ main.py
 ├─ models.py
 ├─ poetry.lock
 ├─ pyproject.toml
 ├─ README.md
 ├─ requirements.txt
+├─ schemas.py
 ├─ static
 │  └─ styles.css
 ├─ templates
