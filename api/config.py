@@ -1,4 +1,5 @@
 from fastapi.security import OAuth2PasswordBearer
+import os 
 
 
 SECRET_KEY = os.getenv("SECRET_KEY")
