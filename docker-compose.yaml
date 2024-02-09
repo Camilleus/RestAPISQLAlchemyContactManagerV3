@@ -12,7 +12,7 @@ services:
       MYSQL_PASSWORD: fghg1234
       MYSQL_ROOT_PASSWORD: root_password_here
     ports:
-      - "3306:3306"
+      - "2137:2137"
     volumes:
       - ./mysql-data:/var/lib/mysql
     command:
