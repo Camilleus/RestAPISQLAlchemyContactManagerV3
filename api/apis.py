@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException, Query, Depends, APIRouter
+from fastapi import FastAPI, HTTPException, Query, Depends, APIRouter, UploadFile, File
 from fastapi.security import OAuth2PasswordBearer
 from fastapi_limiter import FastAPILimiter
 from fastapi_limiter.depends import RateLimiter
@@ -7,10 +7,11 @@ from datetime import date, timedelta
 from models import Contact, User, Token
 from db.dbs import get_db, database
 from typing import List
-from auth.auths import get_current_active_user, login_for_access_token
+from auth.auths import get_current_active_user, login_for_access_token, get_current_user
 from auth.jwts import create_jwt_token, decode_jwt_token
 from models import Contact
 from schemas import ContactCreateUpdate, ContactResponse
+import cloudinary.uploader
 
 
 app = FastAPI()
@@ -97,6 +98,13 @@ def get_birthdays_within_7_days(db: Session = Depends(get_db)):
 async def login_for_access_token(form_data: OAuth2PasswordBearer = Depends()):
     return login_for_access_token(form_data)
 
+
+#cloudinary
+@router.post("/users/avatar/upload/")
+async def upload_avatar(file: UploadFile = File(...), current_user: User = Depends(get_current_user)):
+    response = cloudinary.uploader.upload(file.file)
+    current_user.avatar_url = response["secure_url"]
+    return {"avatar_url": current_user.avatar_url}
 
 app = FastAPI()
 app.include_router(router)
