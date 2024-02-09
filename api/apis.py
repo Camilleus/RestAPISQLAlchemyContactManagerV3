@@ -9,8 +9,8 @@ from db.dbs import get_db, database
 from typing import List
 from auth.auths import get_current_active_user, login_for_access_token
 from auth.jwts import create_jwt_token, decode_jwt_token
-from ..models import Contact
-from ..schemas import ContactCreateUpdate, ContactResponse
+from models import Contact
+from schemas import ContactCreateUpdate, ContactResponse
 
 app = FastAPI()
 
