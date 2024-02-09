@@ -12,6 +12,7 @@ from auth.jwts import create_jwt_token, decode_jwt_token
 from models import Contact
 from schemas import ContactCreateUpdate, ContactResponse
 
+
 app = FastAPI()
 
 
