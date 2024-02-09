@@ -1,14 +1,16 @@
 from fastapi import FastAPI, HTTPException, Query, Depends, APIRouter
 from fastapi.security import OAuth2PasswordBearer
+from fastapi_limiter import FastAPILimiter
+from fastapi_limiter.depends import RateLimiter
 from sqlalchemy.orm import Session
 from datetime import date, timedelta
 from models import Contact, User, Token
 from db.dbs import get_db, database
-from pydantic import BaseModel
 from typing import List
 from auth.auths import get_current_active_user, login_for_access_token
 from auth.jwts import create_jwt_token, decode_jwt_token
-
+from ..models import Contact
+from ..schemas import ContactCreateUpdate, ContactResponse
 
 app = FastAPI()
 
@@ -16,28 +18,17 @@ app = FastAPI()
 router = APIRouter()
 
 
-class ContactCreateUpdate(BaseModel):
-    first_name: str
-    last_name: str
-    email: str
-    phone_number: str
-    birth_date: date
-    additional_data: str = None
-    
-    
-class ContactResponse(BaseModel):
-    id: int
-    first_name: str
-    last_name: str
-    email: str
-    phone_number: str
-    birth_date: date
-    additional_data: str = None
+limiter = FastAPILimiter([RateLimiter(second=60, max_calls=5)])
+
+
+app.add_middleware(limiter)
 
 
 # CRUD operations
 @router.post("/contacts/", response_model=ContactResponse)
 async def create_contact(contact: ContactCreateUpdate, current_user: User = Depends(get_current_active_user)):
+    await limiter.check(f"user:{current_user.username}", increment=True)
+
     query = Contact.__table__.insert().values(**contact.dict())
     contact_id = await database.execute(query)
     return {"id": contact_id, **contact.dict()}
