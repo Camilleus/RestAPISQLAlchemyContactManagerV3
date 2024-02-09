@@ -2,9 +2,14 @@ from databases import Database
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+import os
+from dotenv import load_dotenv
 
 
-DATABASE_URL = "mysql+mysqlconnector://Camilleus:fghg1234@localhost/konigcontacts"
+load_dotenv()
+
+
+DATABASE_URL = os.getenv("DATABASE_URL")
 
 
 database = Database(DATABASE_URL)
