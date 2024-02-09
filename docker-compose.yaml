@@ -1,0 +1,22 @@
+version: "3"
+services:
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+  mysql:
+    image: mysql:5.7
+    environment:
+      MYSQL_DATABASE: konigcontacts
+      MYSQL_USER: Camilleus
+      MYSQL_PASSWORD: fghg1234
+      MYSQL_ROOT_PASSWORD: root_password_here
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./mysql-data:/var/lib/mysql
+    command:
+      [
+        "--character-set-server=utf8mb4",
+        "--collation-server=utf8mb4_unicode_ci",
+      ]
