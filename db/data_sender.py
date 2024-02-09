@@ -1,8 +1,13 @@
 import mysql.connector
+import os 
+from dotenv import load_dotenv
+
+
+load_dotenv()
 
 
 def import_data_to_mysql():
-    DATABASE_URL = "mysql+mysqlconnector://Camilleus:fghg1234@localhost/konigcontacts"
+    DATABASE_URL = os.getenv("DATABASE_URL")
     
     mysql_conn = mysql.connector.connect(
         host="localhost",
