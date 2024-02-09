@@ -2,6 +2,14 @@ from sqlalchemy import Column, Integer, String, Date
 from sqlalchemy.ext.declarative import declarative_base
 from passlib.context import CryptContext
 from pydantic import BaseModel
+import cloudinary
+          
+
+cloudinary.config( 
+  cloud_name = "dfqqteqmv", 
+  api_key = "724751544977486", 
+  api_secret = "***************************" 
+)
 
 
 Base = declarative_base()
@@ -40,6 +48,7 @@ class User(Base):
     username = Column(String, unique=True, index=True)
     hashed_password = Column(String)
     email = Column(String, unique=True, index=True)  
+    avatar_url: str = None
 
     class Config:
         arbitrary_types_allowed = True
