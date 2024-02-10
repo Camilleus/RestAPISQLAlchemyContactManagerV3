@@ -7,10 +7,10 @@ services:
   mysql:
     image: mysql:5.7
     environment:
-      MYSQL_DATABASE: konigcontacts
-      MYSQL_USER: Camilleus
-      MYSQL_PASSWORD: fghg1234
-      MYSQL_ROOT_PASSWORD: root_password_here
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     ports:
       - "2137:2137"
     volumes:
